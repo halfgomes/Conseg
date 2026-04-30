@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Implementação — Segurança em Municípios com Baixa Arrecadação</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Lato:ital,wght@0,300;0,400;0,700;1,300&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde-forte: #0A6640;
+    --verde-claro: #E6F4EC;
+    --verde-medio: #1A9C5B;
+    --amarelo: #F5A623;
+    --amarelo-claro: #FEF6E4;
+    --vermelho: #C0392B;
+    --vermelho-claro: #FDECEA;
+    --azul: #1A56A0;
+    --azul-claro: #EBF2FF;
+    --cinza-bg: #F5F6F8;
+    --cinza-borda: #DDE1EA;
+    --texto: #0F1F2E;
+    --texto-suave: #4B5A6A;
+    --branco: #FFFFFF;
+    --laranja: #D4530A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cinza-bg);
+    color: var(--texto);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── TOPO ── */
+  .topo {
+    background: var(--verde-forte);
+    position: relative;
+    overflow: hidden;
+  }
+  .topo-faixa {
+    background: var(--amarelo);
+    height: 5px;
+  }
+  .topo-inner {
+    padding: 36px 52px 32px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 2;
+  }
+  .topo-icone {
+    font-size: 44px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .topo-kicker {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+  .topo-h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--branco);
+    line-height: 1.15;
+    max-width: 620px;
+  }
+  .topo-sub {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+    font-weight: 300;
+    max-width: 580px;
+  }
+  .topo-bg {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 340px;
+    background: linear-gradient(90deg, transparent, rgba(0,0,0,0.12));
+    pointer-events: none;
+  }
+  .topo-bg-text {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Syne', sans-serif;
+    font-size: 120px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.05);
+    user-select: none;
+  }
+
+  /* ── ALERTA TOPO ── */
+  .alerta-realidade {
+    background: var(--amarelo-claro);
+    border-left: 5px solid var(--amarelo);
+    padding: 16px 24px;
+    margin: 0;
+    font-size: 13.5px;
+    color: #5a3a00;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .alerta-realidade .icon { font-size: 20px; flex-shrink: 0; }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 36px 48px 48px;
+  }
+
+  /* ── DIAGNÓSTICO DE OBSTÁCULOS ── */
+  .obstaculos-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 44px;
+  }
+  .obstaculo {
+    background: var(--vermelho-claro);
+    border: 1px solid #FBBCB8;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .obstaculo-icon { font-size: 26px; margin-bottom: 8px; }
+  .obstaculo-titulo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--vermelho);
+    margin-bottom: 5px;
+  }
+  .obstaculo-desc { font-size: 12px; color: #7a2020; line-height: 1.4; }
+
+  /* ── FASE HEADER ── */
+  .fase {
+    background: var(--branco);
+    border-radius: 12px;
+    border: 1px solid var(--cinza-borda);
+    overflow: hidden;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+  }
+  .fase-header {
+    display: flex;
+    align-items: stretch;
+  }
+  .fase-num {
+    background: var(--verde-forte);
+    color: var(--branco);
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    width: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: -1px;
+  }
+  .fase-info {
+    flex: 1;
+    padding: 16px 22px;
+    background: var(--verde-forte);
+  }
+  .fase-tag {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 4px;
+  }
+  .fase-titulo {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--branco);
+    line-height: 1.2;
+  }
+  .fase-desc {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.7);
+    margin-top: 4px;
+  }
+  .fase-prazo {
+    background: rgba(0,0,0,0.2);
+    padding: 12px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .fase-prazo .prazo-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 4px;
+  }
+  .fase-prazo .prazo-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--amarelo);
+  }
+  .fase-custo-badge {
+    background: var(--amarelo);
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 110px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .fase-custo-badge .custo-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    color: rgba(0,0,0,0.55);
+    margin-bottom: 3px;
+  }
+  .fase-custo-badge .custo-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--verde-forte);
+  }
+
+  /* ── FASE BODY ── */
+  .fase-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .fase-col {
+    padding: 22px 24px;
+  }
+  .fase-col + .fase-col {
+    border-left: 1px solid var(--cinza-borda);
+  }
+  .col-label {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--verde-forte);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .col-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cinza-borda);
+  }
+
+  /* ── PASSO ── */
+  .passos { display: flex; flex-direction: column; gap: 10px; }
+  .passo {
+    display: flex;
+    gap: 12px;
+    font-size: 13.5px;
+    color: var(--texto-suave);
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .passo-num {
+    background: var(--verde-claro);
+    color: var(--verde-forte);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-family: 'Syne', sans-serif;
+  }
+
+  /* ── GRATUITO/BAIXO CUSTO TAGS ── */
+  .recurso-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .recurso-tag {
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Syne', sans-serif;
+  }
+  .tag-gratis { background: var(--verde-claro); color: var(--verde-forte); border: 1px solid #9DD4BA; }
+  .tag-baixo { background: var(--azul-claro); color: var(--azul); border: 1px solid #A8C8F0; }
+  .tag-convenio { background: var(--amarelo-claro); color: #7A4800; border: 1px solid #F5C97F; }
+
+  /* ── DESTAQUE BOX ── */
+  .destaque-box {
+    background: var(--verde-claro);
+    border: 1px solid #9DD4BA;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--verde-forte);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-top: 10px;
+  }
+  .destaque-box .icon { flex-shrink: 0; font-size: 17px; }
+
+  /* ── FONTES DE RECURSOS ── */
+  .fontes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .fonte-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+  .fonte-header {
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fonte-icon { font-size: 24px; }
+  .fonte-nome {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--branco);
+    line-height: 1.2;
+  }
+  .fonte-sigla {
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 1px;
+  }
+  .fonte-body { padding: 14px 18px; }
+  .fonte-body p { font-size: 12.5px; color: var(--texto-suave); line-height: 1.5; margin-bottom: 10px; }
+  .fonte-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+  .fonte-val-label { font-size: 11px; color: var(--texto-suave); }
+  .fonte-como {
+    margin-top: 10px;
+    font-size: 12px;
+    background: var(--cinza-bg);
+    border-radius: 6px;
+    padding: 8px 10px;
+    color: var(--texto-suave);
+  }
+  .fonte-como strong { color: var(--texto); }
+
+  /* ── SECTION ── */
+  .section-title-bloco {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    margin-top: 36px;
+  }
+  .section-title-bloco h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--texto);
+    letter-spacing: 0.5px;
+  }
+  .section-title-bloco .s-line {
+    flex: 1;
+    height: 2px;
+    background: var(--cinza-borda);
+  }
+  .section-title-bloco .s-ico {
+    font-size: 20px;
+  }
+
+  /* ── MODELO COPIAR ── */
+  .modelo-card {
+    background: var(--branco);
+    border: 1px solid var(--cinza-borda);
+    border-radius: 10px;
+    padding: 22px 24px;
+    margin-bottom: 14px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.04);
+  }
+  .modelo-card .m-icon {
+    font-size: 30px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .modelo-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--verde-forte);
+    margin-bottom: 5px;
+  }
+  .modelo-card p { font-size: 13px; color: var(--texto-suave); line-height: 1.55; }
+  .modelo-card .m-custo {
+    margin-left: auto;
+    flex-shrink: 0;
+    text-align: right;
+  }
+  .modelo-card .m-custo .custo-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--verde-medio);
+  }
+  .modelo-card .m-custo .custo-desc {
+    font-size: 11px;
+    color: var(--texto-suave);
+    font-family: 'Roboto Mono', monospace;
+  }
+
+  /* ── AVISO ÉTICO ── */
+  .aviso-etico {
+    background: #FFF8E1;
+    border: 1px solid #FFD54F;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: #5a3a00;
+    margin-top: 36px;
+    display: flex;
+    gap: 10px;
+  }
+  .aviso-etico .icon { font-size: 20px; flex-shrink: 0; }
+
+  /* ── RODAPÉ ── */
+  footer {
+    background: #0A2010;
+    color: rgba(255,255,255,0.45);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  footer strong { color: var(--amarelo); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 740px) {
+    .container { padding: 24px 18px; }
+    .topo-inner { padding: 24px 18px; }
+    .obstaculos-grid { grid-template-columns: repeat(2, 1fr); }
+    .fase-body { grid-template-columns: 1fr; }
+    .fase-col + .fase-col { border-left: none; border-top: 1px solid var(--cinza-borda); }
+    .fontes-grid { grid-template-columns: 1fr; }
+    .topo-bg-text { display: none; }
+    footer { flex-direction: column; }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .fase { animation: slideIn 0.35s ease both; }
+  .fase:nth-child(1) { animation-delay: 0.05s; }
+  .fase:nth-child(2) { animation-delay: 0.12s; }
+  .fase:nth-child(3) { animation-delay: 0.19s; }
+  .fase:nth-child(4) { animation-delay: 0.26s; }
+</style>
+</head>
+<body>
+
+<div class="topo">
+  <div class="topo-faixa"></div>
+  <div class="topo-inner">
+    <div class="topo-icone">🏘️</div>
+    <div>
+      <div class="topo-kicker">Guia Estratégico Executivo · Secretaria de Segurança Pública SP</div>
+      <h1 class="topo-h1">Como replicar boas práticas de segurança em municípios com baixa arrecadação</h1>
+      <p class="topo-sub">Roteiro passo a passo com foco em tecnologia gratuita, convênios federais e estaduais, consórcios intermunicipais e ações de alto impacto com baixo custo. Abril 2026.</p>
+    </div>
+  </div>
+  <div class="topo-bg"></div>
+  <div class="topo-bg-text">R$0</div>
+</div>
+
+<div class="alerta-realidade">
+  <span class="icon">⚠️</span>
+  <span><strong>Realidade dos municípios pobres:</strong> pequena arrecadação própria, sem GCM estruturada, dependência total da PM estadual, ausência de dados sistematizados e baixa capacidade técnica para elaborar projetos de captação. Este guia reconhece essas limitações e propõe caminhos viáveis dentro dessas restrições.</span>
+</div>
+
+<div class="container">
+
+  <!-- OBSTÁCULOS -->
+  <div class="section-title-bloco" style="margin-top:0">
+    <span class="s-ico">🚧</span>
+    <h2>Os 4 obstáculos principais</h2>
+    <div class="s-line"></div>
+  </div>
+
+  <div class="obstaculos-grid">
+    <div class="obstaculo">
+      <div class="obstaculo-icon">💸</div>
+      <div class="obstaculo-titulo">Sem orçamento</div>
+      <div class="obstaculo-desc">Municípios menores dependem quase 100% de FPM e convênios; segurança disputa com saúde e educação.</div>
+    </div>
+    <div class="obstaculo">
+      <div class="obstaculo-icon">👮</div>
+      <div class="obstaculo-titulo">Sem GCM própria</div>
+      <div class="obstaculo-desc">Muitas cidades não têm Guarda Civil Municipal, condição exigida para diversos programas federais.</div>
+    </div>
+    <div class="obstaculo">
+      <div class="obstaculo-icon">📄</div>
+      <div class="obstaculo-titulo">Burocracia de captação</div>
+      <div class="obstaculo-desc">Convênios federais exigem planos, relatórios e contrapartidas que poucos municípios têm capacidade de elaborar.</div>
+    </div>
+    <div class="obstaculo">
+      <div class="obstaculo-icon">📊</div>
+      <div class="obstaculo-titulo">Sem dados locais</div>
+      <div class="obstaculo-desc">Gestão baseada em "percepção" e não em dados — impossível priorizar recursos ou medir resultados.</div>
+    </div>
+  </div>
+
+  <!-- FONTES DE RECURSOS -->
+  <div class="section-title-bloco">
+    <span class="s-ico">💰</span>
+    <h2>Fontes de financiamento disponíveis</h2>
+    <div class="s-line"></div>
+  </div>
+
+  <div class="fontes-grid">
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#1A56A0">
+        <div class="fonte-icon">🏛️</div>
+        <div>
+          <div class="fonte-nome">FNSP</div>
+          <div class="fonte-sigla">FUNDO NACIONAL DE SEGURANÇA PÚBLICA</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#1A56A0">R$ 2,5 bi</div>
+        <div class="fonte-val-label">repassados em 2024 (estados + DF)</div>
+        <p>Cobre câmeras, treinamento, equipamentos e sistemas de informação. Municípios acessam via convênio com o estado de SP ou diretamente se tiverem GCM (PL 1478/25 aprovado na Comissão).</p>
+        <div class="fonte-como"><strong>Como acessar:</strong> via Secretaria Estadual de Segurança Pública (SSP-SP) ou diretamente pelo Ministério da Justiça (SENASP). Exige plano local de segurança.</div>
+      </div>
+    </div>
+
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#0A6640">
+        <div class="fonte-icon">📡</div>
+        <div>
+          <div class="fonte-nome">Sinesp CAD</div>
+          <div class="fonte-sigla">MINISTÉRIO DA JUSTIÇA — GRATUITO</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#0A6640">R$ 0</div>
+        <div class="fonte-val-label">custo para o município</div>
+        <p>Sistema Nacional de Informações de Segurança que integra GCM, PM, PC, Bombeiros e SAMU em uma plataforma. Desenvolvido e oferecido pelo MJ sem custo ao município (caso de Poá/SP).</p>
+        <div class="fonte-como"><strong>Como acessar:</strong> solicitar habilitação pelo portal SINESP do Ministério da Justiça. Único requisito: ter agentes capacitados para operar o sistema.</div>
+      </div>
+    </div>
+
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#7A3A00">
+        <div class="fonte-icon">🤝</div>
+        <div>
+          <div class="fonte-nome">Consórcios Intermunicipais</div>
+          <div class="fonte-sigla">MODELO CAPIVARI / SENTRY / CONDEMAT</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#7A3A00">Divisão de custo</div>
+        <div class="fonte-val-label">por número de municípios participantes</div>
+        <p>Rateio do custo da plataforma Muralha Digital Sentry entre múltiplos municípios. O consórcio CONDEMAT (Alto Tietê) é exemplo prático: 14 municípios dividindo infraestrutura tecnológica.</p>
+        <div class="fonte-como"><strong>Como acessar:</strong> articular com municípios vizinhos e consórcios regionais existentes em SP. SSP-SP pode mediar o processo de formação do consórcio.</div>
+      </div>
+    </div>
+
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#5A2380">
+        <div class="fonte-icon">📷</div>
+        <div>
+          <div class="fonte-nome">City Câmeras / Smart Sampa</div>
+          <div class="fonte-sigla">MODELO DE CÂMERAS PRIVADAS INTEGRADAS</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#5A2380">Custo zero</div>
+        <div class="fonte-val-label">de infraestrutura pública adicional</div>
+        <p>Modelo que integra câmeras de comércios, condomínios e cidadãos à central pública. Em SP capital, permitiu superar em 25% a meta de câmeras sem custo adicional ao erário.</p>
+        <div class="fonte-como"><strong>Como replicar:</strong> criar resolução municipal autorizando a integração; firmar parceria com associações comerciais; plataforma em nuvem a baixo custo.</div>
+      </div>
+    </div>
+
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#1A6B7A">
+        <div class="fonte-icon">🎓</div>
+        <div>
+          <div class="fonte-nome">ComprasSusp</div>
+          <div class="fonte-sigla">PLATAFORMA FEDERAL DE COMPRAS COLETIVAS</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#1A6B7A">R$ 8 bi</div>
+        <div class="fonte-val-label">em atas de registro de preço disponíveis</div>
+        <p>Plataforma federal que centraliza licitações de segurança pública, dando acesso a equipamentos de qualidade com preços de grande escala — sem licitação própria do município.</p>
+        <div class="fonte-como"><strong>Como acessar:</strong> adesão pelo portal do Ministério da Justiça (MJSP). Reduz até 40% o custo de aquisição de câmeras, viaturas e EPIs.</div>
+      </div>
+    </div>
+
+    <div class="fonte-card">
+      <div class="fonte-header" style="background:#8B4513">
+        <div class="fonte-icon">📐</div>
+        <div>
+          <div class="fonte-nome">Emenda Parlamentar</div>
+          <div class="fonte-sigla">DEPUTADOS ESTADUAIS E FEDERAIS</div>
+        </div>
+      </div>
+      <div class="fonte-body">
+        <div class="fonte-val" style="color:#8B4513">Variável</div>
+        <div class="fonte-val-label">conforme articulação política</div>
+        <p>Emendas de deputados estaduais e federais são uma fonte real e subutilizada para câmeras, viaturas e infraestrutura. Exige projeto bem estruturado e apresentação da demanda.</p>
+        <div class="fonte-como"><strong>Como acessar:</strong> SSP-SP pode auxiliar municípios a estruturar projetos para apresentação a parlamentares da região.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASES DE IMPLEMENTAÇÃO -->
+  <div class="section-title-bloco">
+    <span class="s-ico">🗓️</span>
+    <h2>Roteiro de implementação em 4 fases</h2>
+    <div class="s-line"></div>
+  </div>
+
+  <!-- FASE 1 -->
+  <div class="fase">
+    <div class="fase-header">
+      <div class="fase-num">1</div>
+      <div class="fase-info">
+        <div class="fase-tag">Fase Imediata · Custo zero</div>
+        <div class="fase-titulo">Diagnóstico, Governança e Sistemas Gratuitos</div>
+        <div class="fase-desc">Antes de gastar qualquer real, organizar o que já existe e implantar ferramentas gratuitas do governo federal.</div>
+      </div>
+      <div class="fase-prazo"><div class="prazo-label">Prazo</div><div class="prazo-val">0–3 meses</div></div>
+      <div class="fase-custo-badge"><div class="custo-label">Custo estimado</div><div class="custo-val">R$ 0</div></div>
+    </div>
+    <div class="fase-body">
+      <div class="fase-col">
+        <div class="col-label">O que fazer</div>
+        <div class="passos">
+          <div class="passo"><div class="passo-num">1</div><span>Mapear as ocorrências via dados SSP-SP (disponíveis publicamente) e criar um mapa de calor dos pontos críticos do município.</span></div>
+          <div class="passo"><div class="passo-num">2</div><span>Criar ou reativar o <strong>Conseg</strong> (Conselho de Segurança Pública) — obrigatório para acessar vários programas, custo zero.</span></div>
+          <div class="passo"><div class="passo-num">3</div><span>Implantar o <strong>Sinesp CAD</strong> (sistema federal gratuito) que integra GCM, PM, PC, Bombeiros e SAMU num único painel de ocorrências.</span></div>
+          <div class="passo"><div class="passo-num">4</div><span>Elaborar o <strong>Plano Local de Segurança Pública</strong> — documento exigido para acessar o FNSP. SSP-SP oferece modelo.</span></div>
+          <div class="passo"><div class="passo-num">5</div><span>Criar o <strong>Fundo Municipal de Segurança Pública</strong> via lei municipal — pré-requisito para receber recursos federais diretamente.</span></div>
+        </div>
+        <div class="destaque-box">
+          <span class="icon">💡</span>
+          <span>O Sinesp CAD foi implantado em Poá (SP) com custo zero ao município. O sistema do Ministério da Justiça já inclui treinamento remoto dos agentes.</span>
+        </div>
+      </div>
+      <div class="fase-col">
+        <div class="col-label">Recursos disponíveis</div>
+        <div class="recurso-tags">
+          <span class="recurso-tag tag-gratis">✅ Sinesp CAD — Gratuito</span>
+          <span class="recurso-tag tag-gratis">✅ Dados SSP-SP — Gratuito</span>
+          <span class="recurso-tag tag-gratis">✅ Modelo Plano de Segurança</span>
+          <span class="recurso-tag tag-gratis">✅ Capacitação SENASP online</span>
+          <span class="recurso-tag tag-convenio">📋 Apoio técnico SSP-SP</span>
+        </div>
+        <div style="margin-top:16px">
+          <div class="col-label">Por que começar aqui</div>
+          <p style="font-size:13px; color:var(--texto-suave); line-height:1.6">Municípios que não têm plano de segurança e não integram o Sinesp ficam de fora de praticamente todos os editais do FNSP. Esses dois passos desbloqueiam todo o resto.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 2 -->
+  <div class="fase">
+    <div class="fase-header">
+      <div class="fase-num">2</div>
+      <div class="fase-info">
+        <div class="fase-tag">Fase de Articulação · Baixo Custo</div>
+        <div class="fase-titulo">Consórcios, Câmeras Privadas e Primeiro Monitoramento</div>
+        <div class="fase-desc">Usar a estrutura de outros para construir a própria — consórcios e integração de câmeras já existentes.</div>
+      </div>
+      <div class="fase-prazo"><div class="prazo-label">Prazo</div><div class="prazo-val">3–9 meses</div></div>
+      <div class="fase-custo-badge"><div class="custo-label">Custo estimado</div><div class="custo-val">R$ 15–80k</div></div>
+    </div>
+    <div class="fase-body">
+      <div class="fase-col">
+        <div class="col-label">O que fazer</div>
+        <div class="passos">
+          <div class="passo"><div class="passo-num">1</div><span>Ingressar em <strong>consórcio intermunicipal de segurança</strong> existente na região — a SSP-SP deve identificar e facilitar esse ingresso para o município.</span></div>
+          <div class="passo"><div class="passo-num">2</div><span>Lançar <strong>programa de câmeras integradas</strong> (modelo City Câmeras): comércios e residências conectam suas câmeras à central da GCM ou PM em troca de acesso ao sistema.</span></div>
+          <div class="passo"><div class="passo-num">3</div><span>Instalar <strong>câmeras nas entradas e saídas</strong> da cidade — estratégia de alto impacto adotada por Atibaia que gerou queda de 70% em furtos de veículos.</span></div>
+          <div class="passo"><div class="passo-num">4</div><span>Utilizar a plataforma <strong>ComprasSusp</strong> do MJSP para comprar câmeras a preço de grande escala, sem licitação própria.</span></div>
+        </div>
+      </div>
+      <div class="fase-col">
+        <div class="col-label">Recursos disponíveis</div>
+        <div class="recurso-tags">
+          <span class="recurso-tag tag-gratis">✅ Câmeras privadas — custo zero</span>
+          <span class="recurso-tag tag-convenio">📋 Consórcio regional</span>
+          <span class="recurso-tag tag-baixo">💲 ComprasSusp (preço federal)</span>
+          <span class="recurso-tag tag-convenio">📋 FNSP (câmeras de acesso)</span>
+        </div>
+        <div class="destaque-box" style="margin-top:14px">
+          <span class="icon">📌</span>
+          <span><strong>Estratégia de câmeras em entradas/saídas:</strong> com 4 a 8 câmeras em acessos estratégicos, um município pequeno já cria efeito dissuasório e viabiliza recuperação de veículos. Custo estimado de R$ 15–30k para câmeras simples com OCR básico.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 3 -->
+  <div class="fase">
+    <div class="fase-header">
+      <div class="fase-num">3</div>
+      <div class="fase-info">
+        <div class="fase-tag">Fase de Estruturação · Captação de Recursos</div>
+        <div class="fase-titulo">GCM, Central de Monitoramento e Integração Total</div>
+        <div class="fase-desc">Usar os dados e resultados das fases anteriores para captar recursos e estruturar segurança própria.</div>
+      </div>
+      <div class="fase-prazo"><div class="prazo-label">Prazo</div><div class="prazo-val">9–24 meses</div></div>
+      <div class="fase-custo-badge"><div class="custo-label">Custo estimado</div><div class="custo-val">R$ 200–600k</div></div>
+    </div>
+    <div class="fase-body">
+      <div class="fase-col">
+        <div class="col-label">O que fazer</div>
+        <div class="passos">
+          <div class="passo"><div class="passo-num">1</div><span>Criar uma <strong>GCM mínima viável</strong> — mesmo com 10 a 20 agentes, desbloqueia acesso direto ao FNSP e multiplica as fontes de financiamento disponíveis.</span></div>
+          <div class="passo"><div class="passo-num">2</div><span>Implantar <strong>COI (Centro de Operações Integradas)</strong> simplificado — uma sala com monitores ligados às câmeras já instaladas, sem necessidade de estrutura cara.</span></div>
+          <div class="passo"><div class="passo-num">3</div><span>Criar o <strong>GGI (Gabinete de Gestão Integrada)</strong> municipal, unindo todas as forças que atuam na cidade — modelo de Atibaia, que é o principal fator do sucesso e tem custo zero.</span></div>
+          <div class="passo"><div class="passo-num">4</div><span>Capacitar pilotos de <strong>drones</strong> dentro da GCM — custo de formação baixo, equipamentos acessíveis, com grande impacto em fiscalização e apoio a operações.</span></div>
+        </div>
+      </div>
+      <div class="fase-col">
+        <div class="col-label">Recursos disponíveis</div>
+        <div class="recurso-tags">
+          <span class="recurso-tag tag-convenio">📋 FNSP — câmeras e equipamentos</span>
+          <span class="recurso-tag tag-convenio">📋 Emenda parlamentar estadual</span>
+          <span class="recurso-tag tag-gratis">✅ GGI — custo zero</span>
+          <span class="recurso-tag tag-baixo">💲 Câmeras corporais (editais)</span>
+          <span class="recurso-tag tag-baixo">💲 SENASP — capacitação</span>
+        </div>
+        <div class="destaque-box" style="margin-top:14px">
+          <span class="icon">🔑</span>
+          <span><strong>GCM como chave de acesso:</strong> municípios com GCM habilitam acesso a câmeras corporais (FNSP, R$ 102 mi disponíveis), ao FNSP direto e ao programa São José Unida como referência para visitas técnicas gratuitas.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 4 -->
+  <div class="fase">
+    <div class="fase-header">
+      <div class="fase-num">4</div>
+      <div class="fase-info">
+        <div class="fase-tag">Fase de Consolidação · Médio Prazo</div>
+        <div class="fase-titulo">Inteligência de Dados, Prevenção e Expansão da Rede</div>
+        <div class="fase-desc">Transformar infraestrutura em cultura de gestão por dados, prevenção e participação comunitária.</div>
+      </div>
+      <div class="fase-prazo"><div class="prazo-label">Prazo</div><div class="prazo-val">24–48 meses</div></div>
+      <div class="fase-custo-badge"><div class="custo-label">Custo estimado</div><div class="custo-val">FNSP + consórcio</div></div>
+    </div>
+    <div class="fase-body">
+      <div class="fase-col">
+        <div class="col-label">O que fazer</div>
+        <div class="passos">
+          <div class="passo"><div class="passo-num">1</div><span>Implantar <strong>metodologia Compstat</strong> adaptada — reuniões mensais com análise de dados de criminalidade por área e horário para guiar o patrulhamento.</span></div>
+          <div class="passo"><div class="passo-num">2</div><span>Conectar o município à <strong>rede Muralha Digital Sentry</strong> (usada por Atibaia, Capivari e São José dos Campos), compartilhando inteligência intermunicipal.</span></div>
+          <div class="passo"><div class="passo-num">3</div><span>Criar <strong>programas de prevenção social</strong> integrados — iluminação pública em pontos críticos, zeladoria urbana e programas para jovens em vulnerabilidade. Impacto enorme, custo redistributivo.</span></div>
+          <div class="passo"><div class="passo-num">4</div><span>Implementar <strong>policiamento comunitário</strong> com base territorial definida — agentes respondem pelo mesmo território, criando relação de confiança com a população.</span></div>
+        </div>
+      </div>
+      <div class="fase-col">
+        <div class="col-label">Por que a prevenção é essencial</div>
+        <p style="font-size:13px; color:var(--texto-suave); line-height:1.6; margin-bottom:12px">Cidades pobres têm fatores estruturais de violência (desemprego, abandono escolar, ausência de lazer) que câmeras não resolvem. A tecnologia inibe o crime, mas não o elimina. Programas de prevenção integrados à estrutura de segurança são o que diferencia resultados de curto e longo prazo.</p>
+        <div class="recurso-tags">
+          <span class="recurso-tag tag-gratis">✅ Metodologia Compstat (gratuita)</span>
+          <span class="recurso-tag tag-convenio">📋 FNSP — prevenção à violência</span>
+          <span class="recurso-tag tag-convenio">📋 Programa Convive (MJSP)</span>
+          <span class="recurso-tag tag-baixo">💲 Parceria com estado (iluminação)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODELOS PARA COPIAR -->
+  <div class="section-title-bloco">
+    <span class="s-ico">📋</span>
+    <h2>O que pode ser copiado diretamente de cada cidade-modelo</h2>
+    <div class="s-line"></div>
+  </div>
+
+  <div class="modelo-card">
+    <div class="m-icon">🏙️</div>
+    <div>
+      <h3>De São José dos Campos — O modelo de governança São José Unida</h3>
+      <p>A estrutura de integração entre forças (GGI + COI) foi virada <strong>lei municipal</strong> e pode ser replicada em qualquer cidade. São José dos Campos recebeu 79 delegações de outros municípios e 6 países — e disponibiliza visitas técnicas gratuitas. Custo de replicar a governança: zero.</p>
+    </div>
+    <div class="m-custo">
+      <div class="custo-num">R$ 0</div>
+      <div class="custo-desc">GOVERNANÇA</div>
+    </div>
+  </div>
+
+  <div class="modelo-card">
+    <div class="m-icon">🍓</div>
+    <div>
+      <h3>De Atibaia — Os totens de segurança multifuncionais</h3>
+      <p>Os 26 totens instalados em escolas e praças combinam câmera, alarme e comunicação. O modelo pode ser adaptado com soluções mais simples. <strong>A câmera nas entradas e saídas</strong>, especificamente, é a ação de mais alto retorno e pode ser feita com R$ 20–40k via ComprasSusp ou FNSP.</p>
+    </div>
+    <div class="m-custo">
+      <div class="custo-num">R$ 20–40k</div>
+      <div class="custo-desc">CÂMERAS ACESSO</div>
+    </div>
+  </div>
+
+  <div class="modelo-card">
+    <div class="m-icon">🏆</div>
+    <div>
+      <h3>De Capivari — Prioridade política e reestruturação sem grandes obras</h3>
+      <p>Capivari tornou-se a mais segura do estado principalmente por <strong>decisão política de priorização</strong>: dignidade de trabalho, equipamentos modernos e valorização dos agentes. Não exige grande obra ou tecnologia — exige gestão. É o modelo mais acessível para municípios pequenos.</p>
+    </div>
+    <div class="m-custo">
+      <div class="custo-num">Gestão</div>
+      <div class="custo-desc">PRIORIDADE</div>
+    </div>
+  </div>
+
+  <!-- AVISO ÉTICO -->
+  <div class="aviso-etico">
+    <span class="icon">⚖️</span>
+    <div>
+      <strong>Atenção sobre reconhecimento facial:</strong> sistemas de reconhecimento facial devem ser implantados com protocolos rigorosos de governança, transparência e auditoria. Especialistas alertam para o risco de discriminação racial algorítmica — os softwares apresentam taxas de erro maiores em faces negras. Qualquer expansão dessas tecnologias deve ser acompanhada por comitê de ética independente, conforme recomendação do Instituto Sou da Paz e do Núcleo de Estudos da Violência (USP).
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div><strong>Secretaria de Segurança Pública — Estado de São Paulo</strong> · Uso interno · Abril 2026</div>
+  <div>Fontes: MJSP · SENASP · SSP-SP · Prefeituras de Poá, SJC, Atibaia e Capivari · Câmara dos Deputados · Instituto Sou da Paz</div>
+</footer>
+
+</body>
+</html>

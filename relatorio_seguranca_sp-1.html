@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório Estratégico de Segurança Pública — SP</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul-estado: #003399;
+    --azul-escuro: #001a66;
+    --amarelo: #FFCC00;
+    --cinza-fundo: #F2F4F8;
+    --cinza-borda: #D6DBE8;
+    --texto: #0D1B3E;
+    --texto-suave: #4A5568;
+    --verde: #0D7A3E;
+    --vermelho: #C0392B;
+    --laranja: #E67E22;
+    --branco: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cinza-fundo);
+    color: var(--texto);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--azul-escuro);
+    color: var(--branco);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-stripe {
+    background: var(--amarelo);
+    height: 6px;
+    width: 100%;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    padding: 32px 48px 28px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-seal {
+    width: 76px;
+    height: 76px;
+    border-radius: 50%;
+    background: var(--amarelo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(255,204,0,0.25);
+  }
+
+  .header-text {}
+  .header-text .doc-tipo {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--amarelo);
+    margin-bottom: 4px;
+  }
+  .header-text h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    line-height: 1;
+    color: var(--branco);
+  }
+  .header-text p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .header-meta {
+    margin-left: auto;
+    text-align: right;
+  }
+  .header-meta span {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    font-family: 'DM Mono', monospace;
+  }
+  .header-meta strong {
+    display: block;
+    font-size: 13px;
+    color: var(--amarelo);
+    margin-top: 2px;
+  }
+
+  .header-bg {
+    position: absolute;
+    right: -40px;
+    top: -20px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 160px;
+    color: rgba(255,255,255,0.04);
+    letter-spacing: -4px;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── NAV SUMÁRIO ── */
+  .summary-bar {
+    background: var(--branco);
+    border-bottom: 1px solid var(--cinza-borda);
+    padding: 0 48px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+  .summary-bar a {
+    text-decoration: none;
+    color: var(--texto-suave);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 14px 20px;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .summary-bar a:hover {
+    color: var(--azul-estado);
+    border-bottom-color: var(--azul-estado);
+  }
+  .summary-bar a .num {
+    background: var(--cinza-fundo);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--texto-suave);
+  }
+
+  /* ── LAYOUT PRINCIPAL ── */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 48px;
+  }
+
+  /* ── INTRO ── */
+  .intro-box {
+    background: var(--branco);
+    border-left: 4px solid var(--azul-estado);
+    border-radius: 0 8px 8px 0;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .intro-box p {
+    color: var(--texto-suave);
+    font-size: 14.5px;
+    line-height: 1.7;
+  }
+  .intro-box .destaque {
+    color: var(--azul-estado);
+    font-weight: 600;
+  }
+
+  /* ── SEÇÃO ── */
+  .section {
+    margin-bottom: 48px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--cinza-borda);
+  }
+  .section-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--amarelo);
+    background: var(--azul-escuro);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1.5px;
+    color: var(--texto);
+  }
+  .section-subtitle {
+    font-size: 12px;
+    color: var(--texto-suave);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── CIDADE CARD ── */
+  .cidade-card {
+    background: var(--branco);
+    border-radius: 10px;
+    border: 1px solid var(--cinza-borda);
+    overflow: hidden;
+    margin-bottom: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: box-shadow 0.2s;
+  }
+  .cidade-card:hover {
+    box-shadow: 0 4px 24px rgba(0,51,153,0.10);
+  }
+
+  .cidade-header {
+    display: flex;
+    align-items: stretch;
+    background: var(--azul-estado);
+    color: var(--branco);
+  }
+  .cidade-color-bar {
+    width: 8px;
+    flex-shrink: 0;
+  }
+  .cidade-header-main {
+    flex: 1;
+    padding: 20px 24px;
+  }
+  .cidade-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+  .cidade-nome {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    letter-spacing: 1.5px;
+    line-height: 1;
+    color: var(--branco);
+  }
+  .cidade-sub {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 5px;
+    font-weight: 300;
+  }
+  .cidade-badge {
+    padding: 18px 24px;
+    background: rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 130px;
+  }
+  .cidade-badge .badge-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .cidade-badge .badge-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--amarelo);
+    line-height: 1;
+  }
+
+  .cidade-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .cidade-col {
+    padding: 24px 26px;
+  }
+  .cidade-col + .cidade-col {
+    border-left: 1px solid var(--cinza-borda);
+  }
+  .col-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--azul-estado);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .col-title::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 2px;
+    background: var(--azul-estado);
+  }
+
+  /* ── MÉTRICAS ── */
+  .metricas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .metrica {
+    background: var(--cinza-fundo);
+    border-radius: 6px;
+    padding: 12px 14px;
+    border-left: 3px solid var(--verde);
+  }
+  .metrica.alerta {
+    border-left-color: var(--laranja);
+  }
+  .metrica-valor {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px;
+    color: var(--verde);
+    line-height: 1;
+  }
+  .metrica.alerta .metrica-valor {
+    color: var(--laranja);
+  }
+  .metrica-label {
+    font-size: 11px;
+    color: var(--texto-suave);
+    margin-top: 2px;
+    line-height: 1.3;
+  }
+  .metrica-seta {
+    font-size: 18px;
+    margin-right: 2px;
+  }
+
+  /* ── TAGS/TECNOLOGIAS ── */
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .tech-tag {
+    background: #EEF2FF;
+    color: var(--azul-estado);
+    border: 1px solid #C7D2FE;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .tech-tag .icon { font-size: 13px; }
+
+  /* ── LISTA DE ESTRATÉGIAS ── */
+  .estrategia-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .estrategia-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 13.5px;
+    color: var(--texto-suave);
+    line-height: 1.5;
+    align-items: flex-start;
+  }
+  .estrategia-list li::before {
+    content: '→';
+    color: var(--azul-estado);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── QUADRO COMPARATIVO ── */
+  .table-wrap {
+    background: var(--branco);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--cinza-borda);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  thead tr {
+    background: var(--azul-escuro);
+    color: var(--branco);
+  }
+  thead th {
+    padding: 14px 18px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: left;
+  }
+  thead th:first-child { border-radius: 0; }
+  tbody tr {
+    border-bottom: 1px solid var(--cinza-borda);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: #F7F9FF; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    vertical-align: middle;
+  }
+  .td-cidade {
+    font-weight: 600;
+    color: var(--azul-estado);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .td-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .pill {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .pill-green { background: #DCFCE7; color: #166534; }
+  .pill-blue { background: #DBEAFE; color: #1e40af; }
+  .pill-yellow { background: #FEF9C3; color: #92400e; }
+
+  /* ── LIÇÕES ── */
+  .licoes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .licao-card {
+    background: var(--branco);
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid var(--cinza-borda);
+    border-top: 3px solid var(--azul-estado);
+  }
+  .licao-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--cinza-borda);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .licao-titulo {
+    font-weight: 700;
+    color: var(--texto);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+  .licao-texto {
+    font-size: 13px;
+    color: var(--texto-suave);
+    line-height: 1.55;
+  }
+
+  /* ── RODAPÉ ── */
+  footer {
+    background: var(--azul-escuro);
+    color: rgba(255,255,255,0.5);
+    padding: 24px 48px;
+    font-size: 11.5px;
+    font-family: 'DM Mono', monospace;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  footer strong { color: var(--amarelo); }
+
+  /* ── ALERT BOX ── */
+  .alert-recomendacao {
+    background: linear-gradient(135deg, #001a66, #003399);
+    color: var(--branco);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-top: 12px;
+  }
+  .alert-recomendacao h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    color: var(--amarelo);
+    margin-bottom: 14px;
+  }
+  .alert-recomendacao ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .alert-recomendacao ul li {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.85);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .alert-recomendacao ul li span.check {
+    color: var(--amarelo);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 720px) {
+    .container { padding: 24px 18px; }
+    .header-inner { padding: 22px 18px 18px; }
+    .summary-bar { padding: 0 18px; }
+    .cidade-body { grid-template-columns: 1fr; }
+    .cidade-col + .cidade-col { border-left: none; border-top: 1px solid var(--cinza-borda); }
+    .licoes-grid { grid-template-columns: 1fr; }
+    .header-meta { display: none; }
+    footer { flex-direction: column; gap: 8px; }
+    .metricas-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── ANIMAÇÕES ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .cidade-card {
+    animation: fadeInUp 0.4s ease both;
+  }
+  .cidade-card:nth-child(1) { animation-delay: 0.05s; }
+  .cidade-card:nth-child(2) { animation-delay: 0.15s; }
+  .cidade-card:nth-child(3) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-stripe"></div>
+  <div class="header-inner">
+    <div class="header-seal">🛡️</div>
+    <div class="header-text">
+      <div class="doc-tipo">Relatório Estratégico · Confidencial</div>
+      <h1>Cidades Modelo em Segurança Pública</h1>
+      <p>Estado de São Paulo — Tecnologia e Baixo Custo como Diferencial / Abril 2026</p>
+    </div>
+    <div class="header-meta">
+      <span>CLASSIFICAÇÃO</span>
+      <strong>USO INTERNO</strong>
+      <span style="margin-top:8px">PRODUZIDO POR</span>
+      <strong>Gabinete do Secretário</strong>
+    </div>
+  </div>
+  <div class="header-bg">SP</div>
+</header>
+
+<nav class="summary-bar">
+  <a href="#intro">Contexto <span class="num">01</span></a>
+  <a href="#sjc">São José dos Campos <span class="num">02</span></a>
+  <a href="#atibaia">Atibaia <span class="num">03</span></a>
+  <a href="#capivari">Capivari <span class="num">04</span></a>
+  <a href="#comparativo">Comparativo <span class="num">05</span></a>
+  <a href="#licoes">Lições & Recomendações <span class="num">06</span></a>
+</nav>
+
+<div class="container">
+
+  <!-- INTRO -->
+  <div class="intro-box" id="intro">
+    <p>
+      Este relatório analisa três municípios paulistas que alcançaram <span class="destaque">resultados expressivos na redução da criminalidade</span> por meio de estratégias replicáveis, combinando gestão integrada, uso inteligente de tecnologia e otimização de recursos. Os casos foram selecionados com foco no critério de <span class="destaque">custo-benefício</span> e na existência de dados públicos verificáveis pela SSP-SP e institutos independentes como Ipea e Instituto Sou da Paz.
+    </p>
+  </div>
+
+  <!-- SÃO JOSÉ DOS CAMPOS -->
+  <div class="section" id="sjc">
+    <div class="section-header">
+      <div class="section-number">01</div>
+      <div>
+        <div class="section-title">São José dos Campos</div>
+        <div class="section-subtitle">Referência Nacional em Cidade Inteligente e Segurança Integrada</div>
+      </div>
+    </div>
+
+    <div class="cidade-card">
+      <div class="cidade-header">
+        <div class="cidade-color-bar" style="background:#FFCC00"></div>
+        <div class="cidade-header-main">
+          <div class="cidade-tag">Município Polo · Vale do Paraíba</div>
+          <div class="cidade-nome">São José dos Campos</div>
+          <div class="cidade-sub">Programa São José Unida (2017) + CSI — Centro de Segurança e Inteligência (2021)</div>
+        </div>
+        <div class="cidade-badge">
+          <div class="badge-label">Roubos (vs 2016)</div>
+          <div class="badge-value">−84%</div>
+        </div>
+      </div>
+
+      <div class="cidade-body">
+        <div class="cidade-col">
+          <div class="col-title">Principais Resultados</div>
+          <div class="metricas-grid">
+            <div class="metrica">
+              <div class="metrica-valor">−91%</div>
+              <div class="metrica-label">Roubos de veículos (jan–out vs 2016)</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">−61%</div>
+              <div class="metrica-label">Homicídios no período</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">−71%</div>
+              <div class="metrica-label">Furtos de veículos</div>
+            </div>
+            <div class="metrica alerta">
+              <div class="metrica-valor">4 anos</div>
+              <div class="metrica-label">Sem registro de roubo a banco</div>
+            </div>
+          </div>
+        </div>
+        <div class="cidade-col">
+          <div class="col-title">Estratégias Implementadas</div>
+          <ul class="estrategia-list">
+            <li>CSI com 1.691 câmeras inteligentes (full HD, reconhecimento facial), operando 24h/7</li>
+            <li>340 portais OCR para leitura automática de placas — mais de 3 milhões de placas/dia</li>
+            <li>Programa São José Unida: integração total entre GCM, PM, PC, Defesa Civil e Mobilidade Urbana</li>
+            <li>Minicentrais de câmeras em bases das forças de segurança para resposta imediata</li>
+            <li>Integração com plataforma Muralha Digital Sentry (rede intermunicipal)</li>
+            <li>Viaturas elétricas para a GCM e formação contínua de guardas municipais</li>
+          </ul>
+          <div style="margin-top:14px">
+            <div class="col-title">Tecnologias-chave</div>
+            <div class="tech-tags">
+              <span class="tech-tag"><span class="icon">📷</span> Reconhecimento Facial</span>
+              <span class="tech-tag"><span class="icon">🚗</span> OCR / Leitura de Placas</span>
+              <span class="tech-tag"><span class="icon">🗺️</span> Central Integrada 24h</span>
+              <span class="tech-tag"><span class="icon">🔗</span> Rede Intermunicipal</span>
+              <span class="tech-tag"><span class="icon">📊</span> Dados em Tempo Real</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATIBAIA -->
+  <div class="section" id="atibaia">
+    <div class="section-header">
+      <div class="section-number">02</div>
+      <div>
+        <div class="section-title">Atibaia</div>
+        <div class="section-subtitle">Menor Índice de Homicídios do Estado e 2ª do Brasil (Atlas da Violência / Ipea)</div>
+      </div>
+    </div>
+
+    <div class="cidade-card">
+      <div class="cidade-header">
+        <div class="cidade-color-bar" style="background:#22C55E"></div>
+        <div class="cidade-header-main">
+          <div class="cidade-tag">Município Médio · Região de Bragança Paulista</div>
+          <div class="cidade-nome">Atibaia</div>
+          <div class="cidade-sub">COI — Centro de Operações e Inteligência + GGI — Gabinete de Gestão Integrada</div>
+        </div>
+        <div class="cidade-badge">
+          <div class="badge-label">Homicídios / 100k hab.</div>
+          <div class="badge-value">3,2</div>
+        </div>
+      </div>
+
+      <div class="cidade-body">
+        <div class="cidade-col">
+          <div class="col-title">Principais Resultados</div>
+          <div class="metricas-grid">
+            <div class="metrica">
+              <div class="metrica-valor">3,2</div>
+              <div class="metrica-label">Homicídios / 100k hab. — menor do estado de SP</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">−70%</div>
+              <div class="metrica-label">Furtos de veículos em um único mês (set.)</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">2ª</div>
+              <div class="metrica-label">Cidade mais segura do Brasil (100k+ hab.)</div>
+            </div>
+            <div class="metrica alerta">
+              <div class="metrica-valor">400</div>
+              <div class="metrica-label">Mulheres em acompanhamento ativo (GCM)</div>
+            </div>
+          </div>
+        </div>
+        <div class="cidade-col">
+          <div class="col-title">Estratégias Implementadas</div>
+          <ul class="estrategia-list">
+            <li>26 totens de segurança multifuncionais: 16 em escolas e 10 em praças públicas</li>
+            <li>Mais de 2.000 câmeras distribuídas em entradas/saídas, escolas, UBS e vias principais</li>
+            <li>COI modernizado com mesa controladora, servidores e telas de vigilância ampliadas</li>
+            <li>GGI (Gabinete de Gestão Integrada) com participação da sociedade civil (Conseg)</li>
+            <li>Patrulha Guardiã Maria da Penha: monitoramento de medidas protetivas com visitas humanizadas</li>
+            <li>Capacitação da GCM: pilotos de drones, direção defensiva e gestão de comando</li>
+          </ul>
+          <div style="margin-top:14px">
+            <div class="col-title">Tecnologias-chave</div>
+            <div class="tech-tags">
+              <span class="tech-tag"><span class="icon">📷</span> 2.000+ Câmeras</span>
+              <span class="tech-tag"><span class="icon">🗼</span> Totens Inteligentes</span>
+              <span class="tech-tag"><span class="icon">🚁</span> Drones GCM</span>
+              <span class="tech-tag"><span class="icon">🧠</span> Muralha Digital Sentry</span>
+              <span class="tech-tag"><span class="icon">📋</span> Gestão por Dados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CAPIVARI -->
+  <div class="section" id="capivari">
+    <div class="section-header">
+      <div class="section-number">03</div>
+      <div>
+        <div class="section-title">Capivari</div>
+        <div class="section-subtitle">1ª Colocada no IECV (Instituto Sou da Paz) — Cidade Mais Segura do Estado</div>
+      </div>
+    </div>
+
+    <div class="cidade-card">
+      <div class="cidade-header">
+        <div class="cidade-color-bar" style="background:#60A5FA"></div>
+        <div class="cidade-header-main">
+          <div class="cidade-tag">Município de Médio Porte · Região de Campinas</div>
+          <div class="cidade-nome">Capivari</div>
+          <div class="cidade-sub">Transformação estrutural da Secretaria de Segurança Pública com tecnologia e integração</div>
+        </div>
+        <div class="cidade-badge">
+          <div class="badge-label">Ranking IECV 2021/22</div>
+          <div class="badge-value">#1 SP</div>
+        </div>
+      </div>
+
+      <div class="cidade-body">
+        <div class="cidade-col">
+          <div class="col-title">Principais Resultados</div>
+          <div class="metricas-grid">
+            <div class="metrica">
+              <div class="metrica-valor">#1</div>
+              <div class="metrica-label">Mais segura do estado (IECV / Instituto Sou da Paz, 50–500k hab.)</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">+683%</div>
+              <div class="metrica-label">Aumento no número de atendimentos à população</div>
+            </div>
+            <div class="metrica">
+              <div class="metrica-valor">Queda</div>
+              <div class="metrica-label">Contínua nos índices de homicídios, roubos e estupros</div>
+            </div>
+            <div class="metrica alerta">
+              <div class="metrica-valor">Ref.</div>
+              <div class="metrica-label">Recuperação de veículos e desarticulação de quadrilhas</div>
+            </div>
+          </div>
+        </div>
+        <div class="cidade-col">
+          <div class="col-title">Estratégias Implementadas</div>
+          <ul class="estrategia-list">
+            <li>Reformulação total da estrutura de trabalho da Secretaria de Segurança Pública</li>
+            <li>Investimento pesado em tecnologia, equipamentos modernos e qualificação do efetivo</li>
+            <li>Uso da plataforma Muralha Digital Sentry para monitoramento e inteligência de dados</li>
+            <li>Integração intermunicipal — compartilhamento de informações em tempo real com cidades vizinhas</li>
+            <li>Prioridade política declarada: segurança como eixo central da gestão municipal</li>
+            <li>Valorização e condições dignas de trabalho para os agentes de segurança</li>
+          </ul>
+          <div style="margin-top:14px">
+            <div class="col-title">Tecnologias-chave</div>
+            <div class="tech-tags">
+              <span class="tech-tag"><span class="icon">🧠</span> Muralha Digital Sentry</span>
+              <span class="tech-tag"><span class="icon">🔗</span> Rede Intermunicipal</span>
+              <span class="tech-tag"><span class="icon">📍</span> Inteligência Georreferenciada</span>
+              <span class="tech-tag"><span class="icon">🚔</span> Gestão de Efetivo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPARATIVO -->
+  <div class="section" id="comparativo">
+    <div class="section-header">
+      <div class="section-number">04</div>
+      <div>
+        <div class="section-title">Quadro Comparativo</div>
+        <div class="section-subtitle">Visão Consolidada das Três Cidades-Modelo</div>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Município</th>
+            <th>Principal Programa</th>
+            <th>Tecnologia Central</th>
+            <th>Destaque de Resultado</th>
+            <th>Custo-Benefício</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="td-cidade"><div class="td-dot" style="background:#FFCC00"></div>São José dos Campos</div></td>
+            <td>São José Unida + CSI</td>
+            <td>Câmeras IA + OCR + Reconhecimento Facial</td>
+            <td><span class="pill pill-green">−91% roubos de veículos</span></td>
+            <td><span class="pill pill-blue">Alto (SCaaS escalável)</span></td>
+          </tr>
+          <tr>
+            <td><div class="td-cidade"><div class="td-dot" style="background:#22C55E"></div>Atibaia</div></td>
+            <td>COI + GGI + Sentry</td>
+            <td>2.000+ câmeras + Totens + Drones</td>
+            <td><span class="pill pill-green">3,2 hom./100k · 2ª do Brasil</span></td>
+            <td><span class="pill pill-blue">Alto (infra distribuída)</span></td>
+          </tr>
+          <tr>
+            <td><div class="td-cidade"><div class="td-dot" style="background:#60A5FA"></div>Capivari</div></td>
+            <td>Reestruturação SSP + Sentry</td>
+            <td>Muralha Digital Sentry + Rede Intermunicipal</td>
+            <td><span class="pill pill-green">#1 IECV · mais segura do estado</span></td>
+            <td><span class="pill pill-yellow">Muito alto (baixo custo/hab.)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- LIÇÕES & RECOMENDAÇÕES -->
+  <div class="section" id="licoes">
+    <div class="section-header">
+      <div class="section-number">05</div>
+      <div>
+        <div class="section-title">Lições Replicáveis</div>
+        <div class="section-subtitle">O que os três casos têm em comum</div>
+      </div>
+    </div>
+
+    <div class="licoes-grid">
+      <div class="licao-card">
+        <div class="licao-num">01</div>
+        <div class="licao-titulo">Integração acima de tudo</div>
+        <div class="licao-texto">Os três municípios criaram modelos de governança que unem GCM, PM, PC, Defesa Civil e setores municipais numa única central decisória. A tecnologia potencializa o que a integração possibilita.</div>
+      </div>
+      <div class="licao-card">
+        <div class="licao-num">02</div>
+        <div class="licao-titulo">Tecnologia como alavanca, não como solução</div>
+        <div class="licao-texto">Câmeras, OCR e reconhecimento facial são instrumentos de um sistema maior. Sem processos, treinamento e liderança, a tecnologia não gera resultado — como demonstram os sucessos observados nos três casos.</div>
+      </div>
+      <div class="licao-card">
+        <div class="licao-num">03</div>
+        <div class="licao-titulo">Dados para tomada de decisão</div>
+        <div class="licao-texto">A metodologia Compstat (análise de ocorrências por área e horário) foi incorporada de forma explícita ou implícita nos três modelos, permitindo alocação precisa de efetivo e identificação de padrões criminais.</div>
+      </div>
+      <div class="licao-card">
+        <div class="licao-num">04</div>
+        <div class="licao-titulo">Redes intermunicipais reduzem custo</div>
+        <div class="licao-texto">Atibaia, Capivari e São José dos Campos operam conectados a redes de inteligência compartilhada, diluindo o investimento em tecnologia e ampliando o alcance da vigilância para além dos limites de cada município.</div>
+      </div>
+      <div class="licao-card">
+        <div class="licao-num">05</div>
+        <div class="licao-titulo">Segurança como prioridade política</div>
+        <div class="licao-texto">Os resultados foram construídos ao longo de gestões que mantiveram continuidade no investimento e no programa. Capivari, por exemplo, explicitou segurança como eixo central de governo por todo o mandato.</div>
+      </div>
+      <div class="licao-card">
+        <div class="licao-num">06</div>
+        <div class="licao-titulo">Valorização do agente de ponta</div>
+        <div class="licao-texto">Novos concursos, capacitação constante, infraestrutura digna e equipamentos adequados aparecem nas três cidades como pré-condição para que a tecnologia funcione. Agentes motivados e bem formados são insubstituíveis.</div>
+      </div>
+    </div>
+
+    <div class="alert-recomendacao" style="margin-top:28px">
+      <h3>Recomendações para Implementação</h3>
+      <ul>
+        <li><span class="check">✔</span> Iniciar pelo modelo de governança integrada (GGI/São José Unida) antes de adquirir tecnologia — o processo define o instrumento, não o contrário.</li>
+        <li><span class="check">✔</span> Avaliar adesão à plataforma Muralha Digital Sentry para municípios menores: solução de baixo custo por habitante com resultados documentados em múltiplos municípios do estado.</li>
+        <li><span class="check">✔</span> Priorizar câmeras em pontos de entrada e saída de cidades e em rotas de fuga conhecidas — estratégia adotada por Atibaia com resultado de -70% em furtos de veículos num único mês.</li>
+        <li><span class="check">✔</span> Replicar o modelo CSI como referência nacional: São José dos Campos já recebeu delegações de 10 estados e 6 países interessados no modelo e está disponível para parcerias técnicas.</li>
+        <li><span class="check">✔</span> Estabelecer metas baseadas em dados da SSP-SP com avaliação trimestral, vinculando resultados a reconhecimento institucional das forças de segurança locais.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>
+    <strong>Secretaria de Segurança Pública — Estado de São Paulo</strong><br>
+    Relatório de uso interno · Abril 2026
+  </div>
+  <div style="text-align:right">
+    Fontes: SSP-SP · Ipea · Instituto Sou da Paz · Prefeituras de SJC, Atibaia e Capivari<br>
+    Radioagência Nacional · Atlas da Violência 2023
+  </div>
+</footer>
+
+</body>
+</html>
